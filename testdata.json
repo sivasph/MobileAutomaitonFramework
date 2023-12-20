@@ -1,0 +1,15 @@
+{
+  "ProjectName": "BT",
+  "URL": "https://www.businesstimes.com.sg/",
+  "CloudURL": "https://sph.experitest.com/wd/hub",
+  "AccessKey": "eyJhbGciOiJIUzI1NiJ9.eyJ4cC51IjoyMDEwNDI4LCJ4cC5wIjoyLCJ4cC5tIjoxNjg2NTU2ODYwMzEzLCJleHAiOjIwMDE5MTY4ODEsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.krNiSn6N1s1F2FayZp6HXvAl4hL6W3DJ_yNFjGLwkV8",
+
+  "InstallApp":"N",
+
+  "Android_AppName":"com.ps.bt/sg.com.sph.appbt.views.bnavigation.MainActivity",
+  "Android_AppPackage":"com.ps.bt",
+  "Android_AppActivity":"sg.com.sph.appbt.views.bnavigation.MainActivity",
+
+  "iOS_BundleID":"com.sph.btiphone"
+
+}
