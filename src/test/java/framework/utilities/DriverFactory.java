@@ -101,7 +101,6 @@ public class DriverFactory {
                 appiumDriver.manage().deleteAllCookies();
             }
         }
-        appiumDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         appiumDriverThreadLocal.set(appiumDriver);
     }
 
