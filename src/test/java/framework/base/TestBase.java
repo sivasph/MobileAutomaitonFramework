@@ -58,10 +58,10 @@ public class TestBase {
     }
 
     @AfterMethod
-    public void afterMethod(ITestResult result) {
+    public void afterMethod(ITestResult result) throws IOException {
         System.out.println("@ After Method Started");
         if (result.getStatus() == ITestResult.FAILURE){
-            ReportHelper.logTestStep(Status.FAIL, result.getThrowable().getMessage());
+            ReportHelper.logTestStepWithScreenshot_Base64(Status.FAIL, result.getThrowable().getMessage());
         } else if (result.getStatus() == ITestResult.SKIP) {
             ReportHelper.logTestStep(Status.SKIP, "Test skipped " + result.getThrowable());
         }
@@ -70,7 +70,6 @@ public class TestBase {
     @AfterClass
     public void afterClass() {
         ReportHelper.flushReport();
-        DriverFactory.getAppiumDriver().closeApp();
     }
 
 }

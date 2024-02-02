@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="AndroidSanity" parallel="tests" thread-count="5">
     <test name="Onboarding Screen Tests" >
-        <parameter name="udid" value="R5CR204FM7V"/>
+        <parameter name="udid" value="R9YTC00SD5D"/>
         <parameter name="platformName" value="Android"/>
         <parameter name="appType" value="Native"/>
         <parameter name="browser" value="Chrome"/>
@@ -11,22 +11,22 @@
         <parameter name="testType" value="Sanity"/>
         <parameter name="executionType" value="Parallel"/>
         <classes>
-            <class name="framework.testcases.android.sanity.OnboardingPage"/>
+            <class name="framework.testcases.android.app.sanity.OnboardingPage"/>
             <!-- Add more test classes if needed -->
         </classes>
     </test>
-    <test name="Onboarding Screen Tests1">
-        <parameter name="udid" value="R9TR602LNZJ"/>
-        <parameter name="platformName" value="Android"/>
-        <parameter name="appType" value="Native"/>
-        <parameter name="browser" value="Chrome"/>
-        <parameter name="toolName" value="Appium"/>
-        <parameter name="locality" value="Cloud"/>
-        <parameter name="testType" value="Sanity"/>
-        <parameter name="executionType" value="Parallel"/>
-        <classes>
-            <class name="framework.testcases.android.sanity.OnboardingPage"/>
-            <!-- Add more test classes if needed -->
-        </classes>
-    </test>
+<!--    <test name="Onboarding Screen Tests1">-->
+<!--        <parameter name="udid" value="R9TR602LNZJ"/>-->
+<!--        <parameter name="platformName" value="Android"/>-->
+<!--        <parameter name="appType" value="Native"/>-->
+<!--        <parameter name="browser" value="Chrome"/>-->
+<!--        <parameter name="toolName" value="Appium"/>-->
+<!--        <parameter name="locality" value="Cloud"/>-->
+<!--        <parameter name="testType" value="Sanity"/>-->
+<!--        <parameter name="executionType" value="Parallel"/>-->
+<!--        <classes>-->
+<!--            <class name="framework.testcases.android.app.sanity.OnboardingPage"/>-->
+<!--            &lt;!&ndash; Add more test classes if needed &ndash;&gt;-->
+<!--        </classes>-->
+<!--    </test>-->
 </suite>

@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="iosSanity" parallel="tests" thread-count="5">
-    <test name="Onboarding Screen Tests" >
-        <parameter name="udid" value="00008027-0019151801E3002E"/>
-        <parameter name="platformName" value="iOS"/>
-        <parameter name="appType" value="Native"/>
-        <parameter name="browser" value="Safari"/>
+<suite name="AndroidSanity" parallel="tests" thread-count="5">
+    <test name="HomePage Tests1" >
+        <parameter name="udid" value="R9YTC00SD5D"/>
+        <parameter name="platformName" value="Android"/>
+        <parameter name="appType" value="Web"/>
+        <parameter name="browser" value="Chrome"/>
         <parameter name="toolName" value="Appium"/>
         <parameter name="locality" value="Cloud"/>
         <parameter name="testType" value="Sanity"/>
         <parameter name="executionType" value="Parallel"/>
         <classes>
-            <class name="framework.testcases.ios.app.sanity.OnboardingPage"/>
+            <class name="framework.testcases.android.web.sanity.HomePage"/>
             <!-- Add more test classes if needed -->
         </classes>
     </test>
-<!--    <test name="Onboarding Screen Tests1">-->
-<!--        <parameter name="udid" value="00008110-00146C4E0A29401E"/>-->
-<!--        <parameter name="platformName" value="iOS"/>-->
-<!--        <parameter name="appType" value="Native"/>-->
-<!--        <parameter name="browser" value="Safari"/>-->
+<!--    <test name="HomePage Tests2">-->
+<!--        <parameter name="udid" value="R9TR602LNZJ"/>-->
+<!--        <parameter name="platformName" value="Android"/>-->
+<!--        <parameter name="appType" value="Web"/>-->
+<!--        <parameter name="browser" value="Chrome"/>-->
 <!--        <parameter name="toolName" value="Appium"/>-->
 <!--        <parameter name="locality" value="Cloud"/>-->
 <!--        <parameter name="testType" value="Sanity"/>-->
 <!--        <parameter name="executionType" value="Parallel"/>-->
 <!--        <classes>-->
-<!--            <class name="framework.testcases.ios.app.sanity.OnboardingPage"/>-->
+<!--            <class name="framework.testcases.android.web.sanity.HomePage"/>-->
 <!--            &lt;!&ndash; Add more test classes if needed &ndash;&gt;-->
 <!--        </classes>-->
 <!--    </test>-->

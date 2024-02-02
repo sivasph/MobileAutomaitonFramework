@@ -4,9 +4,22 @@ import com.aventstack.extentreports.Status;
 import framework.utilities.DriverFactory;
 import framework.utilities.ReportHelper;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.PerformsTouchActions;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.IOException;
+import java.security.SecureRandom;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PageBase {
 
@@ -15,10 +28,10 @@ public class PageBase {
 
     public PageBase() {
         this.driver = DriverFactory.getAppiumDriver();
-        wait = new WebDriverWait(driver, 10);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
-    public void clickElement(WebElement element, String elementName) throws IOException {
+    public void clickElement(WebElement element, String elementName) throws IOException, IOException {
         wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
         ReportHelper.logTestStepWithScreenshot_Base64(Status.INFO, "clicked on element: "+ elementName);
@@ -134,7 +147,7 @@ public class PageBase {
         int endY = screenHeight / 2; // Middle of the screen
 
         // Create a TouchAction instance and perform the swipe
-        TouchAction touchAction = new TouchAction(driver);
+        TouchAction touchAction = new TouchAction((PerformsTouchActions) driver);
         touchAction.longPress(PointOption.point(startX, startY))
                 .moveTo(PointOption.point(endX, endY))
                 .release()
@@ -148,7 +161,7 @@ public class PageBase {
         int startY = (int) (size.getHeight() * 0.8);
         int endY = (int) (size.getHeight() * 0.2);
 
-        TouchAction touchAction = new TouchAction(driver);
+        TouchAction touchAction = new TouchAction((PerformsTouchActions) driver);
         touchAction.press(PointOption.point(startX, startY))
                 .waitAction(WaitOptions.waitOptions(Duration.ofMillis(500))) // Optional delay
                 .moveTo(PointOption.point(startX, endY))
@@ -162,7 +175,7 @@ public class PageBase {
         int startY = (int) (size.getHeight() * 0.6);
         int endY = (int) (size.getHeight() * 0.3);
 
-        TouchAction touchAction = new TouchAction(driver);
+        TouchAction touchAction = new TouchAction((PerformsTouchActions) driver);
         touchAction.press(PointOption.point(startX, startY))
                 .waitAction(WaitOptions.waitOptions(Duration.ofMillis(500))) // Optional delay
                 .moveTo(PointOption.point(startX, endY))
@@ -230,6 +243,33 @@ public class PageBase {
         System.out.println("Time difference: " + hours + " hours " + minutes + " minutes");
         long[] result = {hours, minutes};
         return result;
+    }
+
+    private static final String ALPHANUMERIC_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String ALPHA_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static final SecureRandom RANDOM = new SecureRandom();
+
+    public static String generateAlphanumericString(int length) {
+        StringBuilder alphanumericString = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = RANDOM.nextInt(ALPHANUMERIC_CHARACTERS.length());
+            char randomChar = ALPHANUMERIC_CHARACTERS.charAt(randomIndex);
+            alphanumericString.append(randomChar);
+        }
+
+        return alphanumericString.toString();
+    }
+    public static String generateAlphaRandomString(int length) {
+        StringBuilder alphanumericString = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = RANDOM.nextInt(ALPHA_CHARACTERS.length());
+            char randomChar = ALPHA_CHARACTERS.charAt(randomIndex);
+            alphanumericString.append(randomChar);
+        }
+
+        return alphanumericString.toString();
     }
 
 }

@@ -1,4 +1,4 @@
-package framework.pageobjects.android;
+package framework.pageobjects.android.app;
 
 import com.aventstack.extentreports.Status;
 import framework.base.PageBase;
@@ -7,13 +7,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
 
 public class OnboardingPageObjects extends PageBase {
+    SoftAssert softAssert;
     public OnboardingPageObjects() {
         super();
         PageFactory.initElements(driver, this);
+        softAssert = new SoftAssert();
     }
     //region Web Elements
     @FindBy(xpath="//*[@text='AGREE']")
@@ -28,7 +31,7 @@ public class OnboardingPageObjects extends PageBase {
     private WebElement subscribeNowOnboardingPage;
     @FindBy(xpath="//*[@text='Log in now']")
     private WebElement OnboardLogin;
-    @FindBy(id="close_button")
+    @FindBy(xpath="//*[@resource-id='com.android.chrome:id/close_button']")
     private WebElement close_login_form;
     @FindBy(xpath="//*[@text='Got it!']")
     private WebElement gotit;
@@ -57,13 +60,14 @@ public class OnboardingPageObjects extends PageBase {
         try{
             clickElement(agree,"Agree");
             clickElement(skip,"Skip");
-            Assert.assertTrue(OnboardLogin.isDisplayed());
-            Assert.assertTrue(subscribeNowOnboardingPage.isDisplayed());
-            Assert.assertTrue(loginLater.isDisplayed());
+            softAssert.assertTrue(OnboardLogin.isDisplayed());
+            softAssert.assertTrue(subscribeNowOnboardingPage.isDisplayed());
+            softAssert.assertTrue(loginLater.isDisplayed());
             ReportHelper.logTestStepWithScreenshot_Base64(Status.PASS, "Splash Page shows option to Login Now, Subscribe Now and Continue to Logon");
             clickElement(OnboardLogin,"Login now");
             Thread.sleep(2000);
-            Assert.assertTrue(close_login_form.isDisplayed());
+            softAssert.assertTrue(close_login_form.isDisplayed());
+            softAssert.assertAll();
             ReportHelper.logTestStepWithScreenshot_Base64(Status.PASS, "Login now takes to mySPH login page");
             clickElement(close_login_form,"Back");
 

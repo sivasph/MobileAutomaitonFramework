@@ -2,16 +2,16 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="iosSanity" parallel="tests" thread-count="5">
     <test name="Onboarding Screen Tests" >
-        <parameter name="udid" value="00008027-0019151801E3002E"/>
+        <parameter name="udid" value="00008110-00146C4E0A29401E"/>
         <parameter name="platformName" value="iOS"/>
-        <parameter name="appType" value="Native"/>
+        <parameter name="appType" value="Web"/>
         <parameter name="browser" value="Safari"/>
         <parameter name="toolName" value="Appium"/>
         <parameter name="locality" value="Cloud"/>
         <parameter name="testType" value="Sanity"/>
         <parameter name="executionType" value="Parallel"/>
         <classes>
-            <class name="framework.testcases.ios.app.sanity.OnboardingPage"/>
+            <class name="framework.testcases.ios.web.sanity.HomePage"/>
             <!-- Add more test classes if needed -->
         </classes>
     </test>
@@ -25,7 +25,7 @@
 <!--        <parameter name="testType" value="Sanity"/>-->
 <!--        <parameter name="executionType" value="Parallel"/>-->
 <!--        <classes>-->
-<!--            <class name="framework.testcases.ios.app.sanity.OnboardingPage"/>-->
+<!--            <class name="framework.testcases.ios.web.sanity.HomePage"/>-->
 <!--            &lt;!&ndash; Add more test classes if needed &ndash;&gt;-->
 <!--        </classes>-->
 <!--    </test>-->
