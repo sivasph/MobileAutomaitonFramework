@@ -1,6 +1,7 @@
 package framework.base;
 
 import com.aventstack.extentreports.Status;
+import com.google.common.collect.ImmutableList;
 import framework.utilities.DriverFactory;
 import framework.utilities.ReportHelper;
 import io.appium.java_client.AppiumDriver;
@@ -9,7 +10,10 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -169,6 +173,33 @@ public class PageBase {
                 .perform();
     }
 
+    public void scrollToElement_MobileWeb(String pageDirection, WebElement element, String elementName) throws Exception {
+        int maxScrolls = 15; // Adjust the maximum number of scrolls as needed
+        int scrollCount = 1;
+        System.out.println("Scroll to element: " + elementName);
+
+        while (scrollCount < maxScrolls) {
+            if (isPresent(element)) {
+                // Element found and displayed, exit the loop
+                break;
+            }
+            // Perform the scroll
+            scroll(pageDirection,.5);
+            System.out.println("Scrolling for "+scrollCount+" Time");
+            scrollCount++;
+
+            // Log and take a screenshot at specific scroll intervals if needed
+            if (scrollCount == 2 || scrollCount == 6) {
+                ReportHelper.logTestStepWithScreenshot_Base64(Status.INFO, "Scrolling to element: " + elementName);
+            }
+        }
+        if (scrollCount == maxScrolls) {
+            // Element was not found after maximum scrolls
+            ReportHelper.logTestStepWithScreenshot_Base64(Status.INFO, "Element not found after scrolling for "+ maxScrolls+" times" + elementName);
+        }
+        Thread.sleep(2000);
+    }
+
     public void scrollDownOneArticle() {
         Dimension size = driver.manage().window().getSize();
         int startX = size.getWidth() / 2;
@@ -270,6 +301,76 @@ public class PageBase {
         }
 
         return alphanumericString.toString();
+    }
+
+    public void swipe(Point start, Point end, Duration duration) {
+        PointerInput input = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence sequence = new Sequence(input, 0);
+        sequence.addAction(input.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), start.x, start.y));
+        sequence.addAction(input.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        sequence.addAction(input.createPointerMove(duration, PointerInput.Origin.viewport(), end.x, end.y));
+        sequence.addAction(input.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        DriverFactory.getAppiumDriver().perform(ImmutableList.of(sequence));
+    }
+
+
+    /*
+     *
+     * If scrollRatio = 0.8 then page will scroll more
+     * If scrollRatio = 0.2 then page will scroll very less
+     *
+     * If user want to scroll page in DOWN direction
+     * Then scroll mobile screen starting from Bottom to Top
+     *
+     * If user want to scroll page in RIGHT direction
+     * Then scroll mobile screen starting from Right to Left
+     *
+     * Assume Screen size = 50(x value) by 100(y value)
+     * midpoint of screen will be 50*0.5 & 100*0.5 i.e. (25,50)
+     *
+     */
+    public void scroll(String pageDirection, double scrollRatio) {
+        Duration SCROLL_DUR = Duration.ofMillis(200);
+        if (scrollRatio < 0 || scrollRatio > 1) {
+            throw new Error("Scroll Ratio must be between 0 and 1");
+        }
+
+        Dimension size = DriverFactory.getAppiumDriver().manage().window().getSize();
+        System.out.println("Screen Size = " + size);
+        Point midPoint = new Point((int) (size.width * 0.5), (int) (size.height * 0.5));
+        int bottom = midPoint.y + (int) (midPoint.y * scrollRatio); // 50 + 25
+        int top = midPoint.y - (int) (midPoint.y * scrollRatio); // 50 - 25
+        int left = midPoint.x - (int) (midPoint.x * scrollRatio); // 25 - 12.5
+        int right = midPoint.x + (int) (midPoint.x * scrollRatio); // 25 + 12.5
+
+
+        if (pageDirection.equalsIgnoreCase("UP")) {
+            //Swipe Top to bottom, Page will go UP
+            swipe(new Point(midPoint.x, top), new Point(midPoint.x, bottom), SCROLL_DUR);
+        } else if (pageDirection.equalsIgnoreCase("DOWN")) {
+            swipe(new Point(midPoint.x, bottom), new Point(midPoint.x, top), SCROLL_DUR);
+        } else if (pageDirection.equalsIgnoreCase("LEFT")) {
+            swipe(new Point(left, midPoint.y), new Point(right, midPoint.y), SCROLL_DUR);
+        } else {
+            //RIGHT
+            swipe(new Point(right, midPoint.y), new Point(left, midPoint.y), SCROLL_DUR);
+        }
+    }
+
+    /*
+     * finger : unique id, can be any name
+     *
+     *
+     */
+    public void longPress(WebElement ele) {
+        Point location = ele.getLocation();
+        PointerInput input = new PointerInput(PointerInput.Kind.TOUCH, "finger");
+        Sequence sequence = new Sequence(input, 0);
+        sequence.addAction(input.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), location.x, location.y));
+        sequence.addAction(input.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        sequence.addAction(input.createPointerMove(Duration.ofSeconds(1), PointerInput.Origin.viewport(), location.x, location.y));
+        sequence.addAction(input.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        DriverFactory.getAppiumDriver().perform(ImmutableList.of(sequence));
     }
 
 }

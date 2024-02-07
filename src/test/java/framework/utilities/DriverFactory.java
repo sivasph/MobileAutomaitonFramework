@@ -18,12 +18,13 @@ import java.util.Calendar;
 
 public class DriverFactory {
 
+    private static AppiumDriver appiumDriver;
     private static ThreadLocal<AppiumDriver> appiumDriverThreadLocal = new ThreadLocal<>();
     public static AppiumDriver getAppiumDriver() {
         return appiumDriverThreadLocal.get();
     }
 
-    public static void setAppiumDriver(AppiumDriver appiumDriver, String udid, String locality, String url, String appType,String platformName) throws IOException {
+    public static void setAppiumDriver(String udid, String locality, String url, String appType,String platformName) throws IOException {
 
         TestData data = TestData.TestDataLoader.loadTestData();
         System.out.println("platformName " + platformName);
@@ -59,6 +60,7 @@ public class DriverFactory {
                 capabilities.setCapability("accessKey", accessKey);
                 capabilities.setCapability("instrumentApp", "false");
                 capabilities.setCapability("testName", projectName);
+                capabilities.setCapability("enforceXPath1", true);
                 appiumDriver = new AndroidDriver(new URL(url), capabilities);
             }
             else if ((platformName.equalsIgnoreCase("Android")) && (appType.equalsIgnoreCase("Web"))) {
@@ -68,6 +70,8 @@ public class DriverFactory {
                 cap.setBrowserName(MobileBrowserType.CHROME);
                 cap.setCapability("accessKey", accessKey);
                 cap.setCapability("deviceQuery", "@serialNumber='"+udid+"'");
+                cap.setCapability("enforceXPath1", true);
+                cap.setCapability("testName", projectName);
                 appiumDriver = new AndroidDriver(new URL(url), cap);
                 appiumDriver.get(data.getURL());
             }
@@ -76,7 +80,6 @@ public class DriverFactory {
                 DesiredCapabilities capabilities = new DesiredCapabilities();
 
                 capabilities.setCapability("deviceQuery", "@serialNumber='"+udid+"'");
-
                 if (installApp.equalsIgnoreCase("Y")) {
                     System.out.println("Installing the app");
                     capabilities.setCapability("appium:app","cloud:"+ bundleID);
@@ -85,6 +88,8 @@ public class DriverFactory {
                 capabilities.setCapability("fullReset", true);
                 capabilities.setCapability("accessKey", accessKey);
                 capabilities.setCapability("instrumentApp", "false");
+                capabilities.setCapability("enforceXPath1", true);
+                capabilities.setCapability("testName", projectName);
                 appiumDriver = new IOSDriver(new URL(url), capabilities);
             }
             else if ((platformName.equalsIgnoreCase("iOS")) && (appType.equalsIgnoreCase("Web"))) {
@@ -94,11 +99,15 @@ public class DriverFactory {
                 cap.setBrowserName(MobileBrowserType.SAFARI);
                 cap.setCapability("accessKey", accessKey);
                 cap.setCapability("deviceQuery", "@serialNumber='"+udid+"'");
+                cap.setCapability("enforceXPath1", true);
+                cap.setCapability("testName", projectName);
                 appiumDriver = new IOSDriver(new URL(url), cap);
                 appiumDriver.get(data.getURL());
                 appiumDriver.manage().deleteAllCookies();
             }
             appiumDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+            appiumDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
+
         }
         appiumDriverThreadLocal.set(appiumDriver);
     }

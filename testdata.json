@@ -4,7 +4,7 @@
   "CloudURL": "https://sph.experitest.com/wd/hub",
   "AccessKey": "eyJhbGciOiJIUzI1NiJ9.eyJ4cC51IjoyMDEwNDM1LCJ4cC5wIjoyMDA1Nzg4LCJ4cC5tIjoxNzAzNjYxNDM2NDIwLCJleHAiOjIwMTkwMjE0NTIsImlzcyI6ImNvbS5leHBlcml0ZXN0In0.jUoCLvnP7mMJ3eVMWTJ35psN7qwqlErQh6WFZxKAfEU",
 
-  "InstallApp":"Y",
+  "InstallApp":"N",
 
   "Android_AppName":"com.ps.bt/sg.com.sph.appbt.views.bnavigation.MainActivity",
   "Android_AppPackage":"com.ps.bt",

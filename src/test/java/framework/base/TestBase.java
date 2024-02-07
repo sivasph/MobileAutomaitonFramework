@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class TestBase {
-    protected AppiumDriver driver;
     String udid;
 
     @BeforeClass
@@ -48,7 +47,7 @@ public class TestBase {
         }else if (testClass.contains("web")&& testType.equalsIgnoreCase("regression")) {
             ReportHelper.initializeExtentReport(data.getProjectName()+"_Web_Regression_"+udid);
         }
-        DriverFactory.setAppiumDriver(driver, udid, locality, cloudUrl, appType, platformName);
+        DriverFactory.setAppiumDriver(udid, locality, cloudUrl, appType, platformName);
     }
     @BeforeMethod
     public void setUpTest(ITestResult result, Method method) {
