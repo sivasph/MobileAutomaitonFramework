@@ -7,6 +7,7 @@ import framework.utilities.ReportHelper;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.PerformsTouchActions;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.Dimension;
@@ -173,7 +174,7 @@ public class PageBase {
                 .perform();
     }
 
-    public void scrollToElement_MobileWeb(String pageDirection, WebElement element, String elementName) throws Exception {
+    public void scrollToElement_MobileWeb(String pageDirection, double scrollRation, WebElement element, String elementName) throws Exception {
         int maxScrolls = 15; // Adjust the maximum number of scrolls as needed
         int scrollCount = 1;
         System.out.println("Scroll to element: " + elementName);
@@ -184,7 +185,7 @@ public class PageBase {
                 break;
             }
             // Perform the scroll
-            scroll(pageDirection,.5);
+            scroll(pageDirection,scrollRation);
             System.out.println("Scrolling for "+scrollCount+" Time");
             scrollCount++;
 
@@ -373,4 +374,42 @@ public class PageBase {
         DriverFactory.getAppiumDriver().perform(ImmutableList.of(sequence));
     }
 
+    public void swipeBasedOnElementSize(WebElement element, String direction) {
+        Dimension size = element.getSize();
+        Point location = element.getLocation();
+
+        int startX = location.getX() + size.getWidth() /2 ;
+        int startY = location.getY() + size.getHeight() / 2;
+        System.out.println("startX"+startX);
+        System.out.println("startY"+startY);
+        int endX = startX/3;
+        int endY = startY/3;
+
+        switch (direction.toUpperCase()) {
+            case "UP":
+                endY -= size.getHeight() / 2;
+                System.out.println("endY - "+endY);
+                break;
+            case "DOWN":
+                endY += size.getHeight() / 2;
+                System.out.println("endY + "+endY);
+                break;
+            case "LEFT":
+                endX -= size.getWidth() / 2;
+                System.out.println("endX - "+endX);
+                break;
+            case "RIGHT":
+                endX += size.getWidth() / 2;
+                System.out.println("endX + "+endX);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid direction: " + direction);
+        }
+
+        new TouchAction((PerformsTouchActions) driver)
+                .longPress(LongPressOptions.longPressOptions().withPosition(PointOption.point(startX, startY)).withDuration(Duration.ofMillis(500)))
+                .moveTo(PointOption.point(endX, endY))
+                .release()
+                .perform();
+    }
 }
